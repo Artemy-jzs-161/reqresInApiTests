@@ -43,7 +43,7 @@ public class ListUsersTests extends TestBase {
                         given(requestSpecification)
                                 .param("page", 2)
                                 .when()
-                                .get("/api/users")
+                                .get("users")
                                 .then()
                                 .spec(resSpecCode200)
                                 .extract().as(ListUsersResponseModel.class));
