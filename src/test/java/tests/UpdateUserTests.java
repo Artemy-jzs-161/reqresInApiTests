@@ -1,39 +1,37 @@
 package tests;
 
+import io.qameta.allure.Owner;
 import models.UpdateUserRequestModel;
 import models.UpdateUsersResponseModel;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static specs.TestSpecs.*;
-
-
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DisplayName("API test for REQRES")
+@DisplayName("Checking update user")
 public class UpdateUserTests extends TestBase {
+
+    @Owner("Artemy-jzs-161")
+    @DisplayName("Checking update user, PATCH method")
     @Test
-    @DisplayName("Checking user update, method PATCH")
-    void checkUpdateUserJobTests() {
+    void updateUserJobTest() {
         UpdateUserRequestModel updateUserRequestModel = new UpdateUserRequestModel();
         updateUserRequestModel.setName("morpheus");
         updateUserRequestModel.setJob("zion resident");
 
         UpdateUsersResponseModel updateUsersResponseModel =
-                step("make request", () ->
+                step("Make request", () ->
                         given(requestSpecification)
                                 .body(updateUserRequestModel)
                                 .when()
-                                .patch("/api/users/{id}", 2)
+                                .patch("users/{id}", 2)
                                 .then()
                                 .spec(resSpecCode200)
                                 .extract().as(UpdateUsersResponseModel.class));
 
-        step("check name, job", () -> {
+        step("Check name, job", () -> {
             assertEquals("morpheus", updateUsersResponseModel.getName());
             assertEquals("zion resident", updateUsersResponseModel.getJob());
         });

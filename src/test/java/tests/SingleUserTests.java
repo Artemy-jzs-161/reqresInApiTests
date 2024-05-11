@@ -1,33 +1,32 @@
 package tests;
 
+import io.qameta.allure.Owner;
 import models.UserResponse;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.*;
 
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static specs.SingleUserSpec.UserRequestSpec;
-import static specs.SingleUserSpec.UsersListResponseSpec;
+import static specs.TestSpecs.*;
 
-@DisplayName("API test for REQRES")
+
+@DisplayName("Checking single user")
 public class SingleUserTests extends TestBase {
 
+    @Owner("Artemy-jzs-161")
+    @DisplayName("Checking user receipt by id, GET method")
     @Test
-    @DisplayName("Checking user receipt by id, method GET")
-    void getSingleUserTests() {
+    void singleUserTest() {
         UserResponse userResponse =
-                step("make request", () ->
-                        given(UserRequestSpec)
+                step("Make request", () ->
+                        given(requestSpecification)
                                 .when()
-                                .get("/api/users/2")
+                                .get("users/{id}", 2)
                                 .then()
-                                .spec(UsersListResponseSpec)
+                                .spec(resSpecCode200)
                                 .extract().as(UserResponse.class));
 
-        step("verify single user data", () -> {
+        step("Verify single user data", () -> {
             assertEquals(2, userResponse.getUserModel().getId());
             assertEquals("janet.weaver@reqres.in", userResponse.getUserModel().getEmail());
             assertEquals("Weaver", userResponse.getUserModel().getLastName());

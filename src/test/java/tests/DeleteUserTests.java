@@ -1,24 +1,25 @@
 package tests;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import io.qameta.allure.Owner;
+import org.junit.jupiter.api.*;
 
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
 import static specs.TestSpecs.*;
 
-@DisplayName("API test for REQRES")
+@DisplayName("Check delete user")
 public class DeleteUserTests extends TestBase {
 
+    @Owner("Artemy-jzs-161")
+    @DisplayName("Check code 204 when delete user, DELETE method")
     @Test
-    @DisplayName("Check code 204 when delete user, method DELETE")
-    void checkStatusCodeWhenDeleteUserTests() {
+    void statusCodeWhenDeleteUserTest() {
         String deleteResponse =
                 step("Make Request", () ->
                         given(requestSpecification)
                                 .when()
-                                .delete("/api/users/{id}", 2)
+                                .delete("users/{id}", 2)
                                 .then()
                                 .spec(resSpecCode204)
                                 .extract().asString()

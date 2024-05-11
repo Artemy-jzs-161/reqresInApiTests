@@ -2,11 +2,9 @@ package models;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
-
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserModel {
-
         private Integer id;
         @JsonProperty("first_name")
         private String firstName;

@@ -1,50 +1,55 @@
 package tests;
 
-import io.restassured.specification.ResponseSpecification;
+import io.qameta.allure.Owner;
 import models.ListUsersResponseModel;
-import models.UserResponse;
-import org.hamcrest.Matcher;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
-import java.util.Optional;
-
-import static com.google.common.base.Predicates.equalTo;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
-
-import static io.restassured.RestAssured.sessionId;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static specs.SingleUserSpec.UserRequestSpec;
-import static specs.SingleUserSpec.UsersListResponseSpec;
+import static specs.TestSpecs.*;
 
-@DisplayName("API test for REQRES")
+@DisplayName("Checking list users")
 public class ListUsersTests extends TestBase {
 
+    @Owner("Artemy-jzs-161")
+    @DisplayName("Checking second user in the List, GET method")
     @Test
-    @DisplayName("Checking that in requests to the list of users the id is not empty, method GET")
-    void getSingleListUsersTests() {
+    void SecondUserInTheListTest() {
         ListUsersResponseModel listUsersResponseModel =
-                step("make request", () ->
-                        given(UserRequestSpec)
+                step("Make request", () ->
+                        given(requestSpecification)
                                 .param("page", 2)
                                 .when()
-                                .get("/api/users")
+                                .get("users")
                                 .then()
-                                .spec(UsersListResponseSpec)
+                                .spec(resSpecCode200)
                                 .extract().as(ListUsersResponseModel.class));
 
-        step("verify second single user in array", () -> {
+        step("Verify second single user in array", () -> {
             assertEquals(8, listUsersResponseModel.getUserModel().get(1).getId());
             assertEquals("lindsay.ferguson@reqres.in", listUsersResponseModel.getUserModel().get(1).getEmail());
             assertEquals("Lindsay", listUsersResponseModel.getUserModel().get(1).getFirstName());
             assertEquals("Ferguson", listUsersResponseModel.getUserModel().get(1).getLastName());
         });
+    }
 
-        step("checking the number of users per page", () -> {
+    @Owner("Artemy-jzs-161")
+    @DisplayName("Checking the display of six users on the page, GET method")
+    @Test
+    void countUsersOnPageTest() {
+        ListUsersResponseModel listUsersResponseModel =
+                step("make request", () ->
+                        given(requestSpecification)
+                                .param("page", 2)
+                                .when()
+                                .get("/api/users")
+                                .then()
+                                .spec(resSpecCode200)
+                                .extract().as(ListUsersResponseModel.class));
+
+        step("Checking the number of users per page", () -> {
             assertEquals(6, listUsersResponseModel.getUserModel().size());
-
         });
     }
 }
