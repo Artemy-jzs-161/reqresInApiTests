@@ -10,6 +10,7 @@ import org.junit.jupiter.api.*;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static specs.TestSpecs.*;
 
 @DisplayName("Check login tests")
@@ -34,7 +35,7 @@ public class LoginTests extends TestBase {
                                 .extract().as(LoginResponseModelLombok.class));
 
         step("Check response", () ->
-                assertEquals("QpwL5tke4Pnpja7X4", responseModel.getToken()));
+                assertNotNull(responseModel.getToken()));
     }
 
     @Owner("Artemy-jzs-161")

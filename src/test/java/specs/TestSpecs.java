@@ -3,8 +3,8 @@ package specs;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import io.restassured.builder.ResponseSpecBuilder;
-import io.qameta.allure.restassured.AllureRestAssured;
 
+import static helpers.CustomAllureListener.withCustomTemplates;
 import static io.restassured.RestAssured.with;
 import static io.restassured.filter.log.LogDetail.*;
 import static io.restassured.http.ContentType.JSON;
@@ -12,7 +12,7 @@ import static io.restassured.http.ContentType.JSON;
 public class TestSpecs {
 
     public static RequestSpecification requestSpecification = with()
-            .filter(new AllureRestAssured())
+            .filter(withCustomTemplates())
             .log().uri()
             .log().body()
             .log().headers()

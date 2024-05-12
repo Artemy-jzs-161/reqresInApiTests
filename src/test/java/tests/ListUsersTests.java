@@ -15,7 +15,7 @@ public class ListUsersTests extends TestBase {
     @Owner("Artemy-jzs-161")
     @DisplayName("Checking second user in the List, GET method")
     @Test
-    void SecondUserInTheListTest() {
+    void secondUserInTheListTest() {
         ListUsersResponseModel listUsersResponseModel =
                 step("Make request", () ->
                         given(requestSpecification)
